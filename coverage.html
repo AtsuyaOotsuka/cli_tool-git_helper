@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-		<title>app: Go Coverage Report</title>
+		<title>svc: Go Coverage Report</title>
 		<style>
 			body {
 				background: black;
@@ -55,29 +55,27 @@
 			<div id="nav">
 				<select id="files">
 				
-				<option value="file0">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/app/app.go (100.0%)</option>
+				<option value="file0">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/check.go (100.0%)</option>
 				
-				<option value="file1">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/check.go (100.0%)</option>
+				<option value="file1">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/base.go (100.0%)</option>
 				
-				<option value="file2">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/base.go (100.0%)</option>
+				<option value="file2">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_com.go (100.0%)</option>
 				
-				<option value="file3">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_com.go (100.0%)</option>
+				<option value="file3">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_commit.go (100.0%)</option>
 				
-				<option value="file4">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_commit.go (100.0%)</option>
+				<option value="file4">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_commit_redo.go (100.0%)</option>
 				
-				<option value="file5">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_commit_redo.go (100.0%)</option>
+				<option value="file5">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_fetch.go (100.0%)</option>
 				
-				<option value="file6">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_fetch.go (100.0%)</option>
+				<option value="file6">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_fork.go (100.0%)</option>
 				
-				<option value="file7">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_fork.go (100.0%)</option>
+				<option value="file7">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_pr.go (100.0%)</option>
 				
-				<option value="file8">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_pr.go (100.0%)</option>
+				<option value="file8">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_pull.go (100.0%)</option>
 				
-				<option value="file9">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_pull.go (100.0%)</option>
+				<option value="file9">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_push.go (100.0%)</option>
 				
-				<option value="file10">github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc/git_push.go (100.0%)</option>
-				
-				<option value="file11">github.com/AtsuyaOotsuka/cli_tool-git_helper/main.go (0.0%)</option>
+				<option value="file10">github.com/AtsuyaOotsuka/cli_tool-git_helper/main.go (0.0%)</option>
 				
 				</select>
 			</div>
@@ -91,107 +89,7 @@
 		</div>
 		<div id="content">
 		
-		<pre class="file" id="file0" style="display: none">package app
-
-import (
-        "flag"
-        "fmt"
-
-        "github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/config"
-        "github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc"
-        "github.com/AtsuyaOotsuka/cli_tool-git_helper/internal/svc/git_cmd_svc"
-
-        "github.com/atylab-libs/go_cli_tool-libs/pkg/cli_pkg"
-        "github.com/atylab-libs/go_cli_tool-libs/pkg/utils_pkg"
-)
-
-type App struct {
-        os           utils_pkg.OsInterface
-        check        svc.CheckSvcInterface
-        git_cmd_svc  git_cmd_svc.GitCmdSvcInterface
-        cli_pkg      cli_pkg.CliPkgInterface
-        selectedMode string
-}
-
-func NewApp(
-        os utils_pkg.OsInterface,
-        check_svc svc.CheckSvcInterface,
-        git_cmd_svc git_cmd_svc.GitCmdSvcInterface,
-        cli_pkg cli_pkg.CliPkgInterface,
-) *App <span class="cov8" title="1">{
-        return &amp;App{
-                os:          os,
-                check:       check_svc,
-                git_cmd_svc: git_cmd_svc,
-                cli_pkg:     cli_pkg,
-        }
-}</span>
-
-// 起動可能か確認
-func (a *App) Check() <span class="cov8" title="1">{
-        if err := a.check.CanStart(); err != nil </span><span class="cov8" title="1">{
-                fmt.Println(err.Error())
-                a.os.Exit(1)
-        }</span>
-}
-
-// 初期化処理
-func (a *App) Init() <span class="cov8" title="1">{
-        modes := config.ModeMenuConfig
-        mode := flag.String("mode", "", "Mode: add or delete")
-        flag.Parse()
-        a.selectedMode = *mode
-        if a.selectedMode == "" </span><span class="cov8" title="1">{
-                a.selectedMode = a.cli_pkg.SelectFromMap("モードを選んでください", modes)
-        }</span>
-}
-
-// 実行処理
-func (a *App) Run() <span class="cov8" title="1">{
-
-        var err error
-        var exitCode int
-        switch a.selectedMode </span>{
-        case "git_com":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitCom()</span>
-
-        case "git_fork":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitFork()</span>
-
-        case "git_pr":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitPr()</span>
-
-        case "git_commit":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitCommit()</span>
-
-        case "git_commit_redo":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitCommitRedo()</span>
-
-        case "git_push":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitPush()</span>
-
-        case "git_pull":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitPull()</span>
-
-        case "git_fetch":<span class="cov8" title="1">
-                exitCode, err = a.git_cmd_svc.GitFetch()</span>
-        case "exit":<span class="cov8" title="1">
-                fmt.Println("👋 ツールを終了します。")
-                a.os.Exit(0)</span>
-
-        default:<span class="cov8" title="1">
-                fmt.Println("😕 未知のモードです:", a.selectedMode)
-                a.os.Exit(0)</span>
-        }
-
-        <span class="cov8" title="1">if err != nil </span><span class="cov8" title="1">{
-                fmt.Println(err.Error())
-                a.os.Exit(exitCode)
-        }</span>
-}
-</pre>
-		
-		<pre class="file" id="file1" style="display: none">package svc
+		<pre class="file" id="file0" style="display: none">package svc
 
 import (
         "github.com/atylab-libs/go_cli_tool-libs/pkg/utils_pkg"
@@ -248,7 +146,7 @@ func (cs *CheckSvcStruct) CanStart() error <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file2" style="display: none">package git_cmd_svc
+		<pre class="file" id="file1" style="display: none">package git_cmd_svc
 
 import (
         "fmt"
@@ -337,7 +235,7 @@ func (g *GitCmdSvc) getRepoName() (string, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file3" style="display: none">package git_cmd_svc
+		<pre class="file" id="file2" style="display: none">package git_cmd_svc
 
 import (
         "fmt"
@@ -370,7 +268,7 @@ func (g *GitCmdSvc) GitCom() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file4" style="display: none">package git_cmd_svc
+		<pre class="file" id="file3" style="display: none">package git_cmd_svc
 
 import "fmt"
 
@@ -409,7 +307,7 @@ func (g *GitCmdSvc) GitCommit() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file5" style="display: none">package git_cmd_svc
+		<pre class="file" id="file4" style="display: none">package git_cmd_svc
 
 import "fmt"
 
@@ -419,7 +317,7 @@ func (g *GitCmdSvc) GitCommitRedo() (int, error) <span class="cov8" title="1">{
 }</span>
 </pre>
 		
-		<pre class="file" id="file6" style="display: none">package git_cmd_svc
+		<pre class="file" id="file5" style="display: none">package git_cmd_svc
 
 import (
         "fmt"
@@ -456,7 +354,7 @@ func (g *GitCmdSvc) GitFetch() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file7" style="display: none">package git_cmd_svc
+		<pre class="file" id="file6" style="display: none">package git_cmd_svc
 
 import (
         "fmt"
@@ -539,7 +437,7 @@ func (g *GitCmdSvc) GitFork() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file8" style="display: none">package git_cmd_svc
+		<pre class="file" id="file7" style="display: none">package git_cmd_svc
 
 import (
         "fmt"
@@ -605,7 +503,7 @@ func (g *GitCmdSvc) GitPr() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file9" style="display: none">package git_cmd_svc
+		<pre class="file" id="file8" style="display: none">package git_cmd_svc
 
 import "fmt"
 
@@ -633,7 +531,7 @@ func (g *GitCmdSvc) GitPull() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file10" style="display: none">package git_cmd_svc
+		<pre class="file" id="file9" style="display: none">package git_cmd_svc
 
 import "fmt"
 
@@ -660,7 +558,7 @@ func (g *GitCmdSvc) GitPush() (int, error) <span class="cov8" title="1">{
 }
 </pre>
 		
-		<pre class="file" id="file11" style="display: none">package main
+		<pre class="file" id="file10" style="display: none">package main
 
 import (
         "fmt"
