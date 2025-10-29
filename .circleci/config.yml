@@ -1,9 +1,9 @@
 version: 2.1
 
-environments:
-  docker:
-    golang: &golang
-      image: circleci/golang:1.19
+executors:
+  golang:
+    docker:
+      - image: circleci/golang:1.19
 
 commands:
   install_dependencies:
@@ -22,11 +22,12 @@ commands:
 
 jobs:
   test:
-    <<: *golang
+    executor: golang   # ←ここ！
     steps:
       - checkout
       - install_dependencies
       - run_tests
+
 workflows:
   version: 2
   test_workflow:
