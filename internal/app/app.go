@@ -82,6 +82,7 @@ func (a *App) Run() {
 
 	case "git_fetch":
 		exitCode, err = a.git_cmd_svc.GitFetch()
+
 	case "exit":
 		fmt.Println("👋 ツールを終了します。")
 		a.os.Exit(0)

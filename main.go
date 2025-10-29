@@ -40,7 +40,7 @@ func main() {
 		git_cmd_svc,
 		cli_pkg,
 	)
-	//app.Check()
+	app.Check()
 	app.Init()
 	app.Run()
 }
