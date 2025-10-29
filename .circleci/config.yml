@@ -1,0 +1,35 @@
+version: 2.1
+
+executors:
+  golang:
+    docker:
+      - image: cimg/go:1.24
+
+commands:
+  install_dependencies:
+    description: "Install project dependencies"
+    steps:
+      - run:
+          name: Install Dependencies
+          command: go mod download
+
+  run_tests:
+    description: "Run unit tests"
+    steps:
+      - run:
+          name: Run Tests
+          command: go test ./...
+
+jobs:
+  test:
+    executor: golang   # ←ここ！
+    steps:
+      - checkout
+      - install_dependencies
+      - run_tests
+
+workflows:
+  version: 2
+  test_workflow:
+    jobs:
+      - test
