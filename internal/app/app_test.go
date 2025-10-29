@@ -70,7 +70,7 @@ func TestCheckWithErr(t *testing.T) {
 	mock.check_svc_mock = check_svc_mock
 
 	os_mock := mock.os_mock.(*utils_pkg_mock.OsMock)
-	os_mock.On("Exit", 2).Return()
+	os_mock.On("Exit", 1).Return()
 	mock.os_mock = os_mock
 
 	app := createApp(mock)
